@@ -19,14 +19,18 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="flex items-center justify-between bg-white border-b px-8 py-5">
+  <header className="hidden lg:flex items-center justify-between border-b bg-white px-8 py-5">
+
+    {/* Left */}
+
+    <div className="flex items-center gap-4">
 
       <button
-  onClick={() => history.back()}
-  className="mb-5 rounded-lg border px-4 py-2 hover:bg-gray-100"
->
-  ← Back
-</button>
+        onClick={() => history.back()}
+        className="rounded-lg border px-4 py-2 transition hover:bg-gray-100"
+      >
+        ← Back
+      </button>
 
       <div>
         <h1 className="text-3xl font-bold text-[#0B6B3A]">
@@ -38,24 +42,31 @@ export default function Header() {
         </p>
       </div>
 
-      <div className="flex items-center gap-4">
+    </div>
 
-        <div className="text-right">
-          <p className="font-semibold">
-            {admin.fullName || "Administrator"}
-          </p>
+    {/* Right */}
 
-          <p className="text-sm text-gray-500">
-            {admin.role || "SUPER_ADMIN"}
-          </p>
-        </div>
+    <div className="flex items-center gap-4">
 
-        <div className="h-12 w-12 rounded-full bg-[#0B6B3A] flex items-center justify-center text-white text-lg font-bold">
-          {admin.fullName?.charAt(0) || "A"}
-        </div>
+      <div className="text-right">
+
+        <p className="font-semibold">
+          {admin.fullName || "Administrator"}
+        </p>
+
+        <p className="text-sm text-gray-500">
+          {admin.role || "SUPER_ADMIN"}
+        </p>
 
       </div>
 
-    </header>
-  );
-}
+      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#0B6B3A] text-lg font-bold text-white">
+
+        {admin.fullName?.charAt(0) || "A"}
+
+      </div>
+
+    </div>
+
+  </header>
+);}

@@ -61,9 +61,9 @@ export default function LoginCard() {
 
         <Card
   onClick={() => router.push("/admin/login")}
-  className="cursor-pointer rounded-2xl border border-gray-200 transition-all duration-300 hover:-translate-y-1 hover:border-[#0B6B3A] hover:shadow-xl"
+  className="w-full max-w-3xl overflow-hidden rounded-[32px] border border-[#D4A017]/30 bg-white shadow-2xl"
 >
-  <CardContent className="flex items-center justify-between p-6">
+  <CardContent className="p-6 sm:p-8 lg:p-12">
 
     <div className="flex items-center gap-5">
 
@@ -94,9 +94,9 @@ export default function LoginCard() {
 
  <Card
   onClick={() => router.push("/parish/login")}
-  className="cursor-pointer rounded-2xl border border-gray-200 transition-all duration-300 hover:-translate-y-1 hover:border-[#0B6B3A] hover:shadow-xl"
+  className="w-full max-w-3xl overflow-hidden rounded-[32px] border border-[#D4A017]/30 bg-white shadow-2xl"
 >
-  <CardContent className="flex items-center justify-between p-6">
+  <CardContent className="p-6 sm:p-8 lg:p-12">
 
     <div className="flex items-center gap-5">
 
@@ -128,9 +128,9 @@ export default function LoginCard() {
 
  <Card
   onClick={() => router.push("/committee/login")}
-  className="cursor-pointer rounded-2xl border border-gray-200 transition-all duration-300 hover:-translate-y-1 hover:border-[#0B6B3A] hover:shadow-xl"
+  className="w-full max-w-3xl overflow-hidden rounded-[32px] border border-[#D4A017]/30 bg-white shadow-2xl"
 >
-  <CardContent className="flex items-center justify-between p-6">
+  <CardContent className="p-6 sm:p-8 lg:p-12">
 
     <div className="flex items-center gap-5">
 

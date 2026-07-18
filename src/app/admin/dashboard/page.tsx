@@ -94,7 +94,7 @@ const filteredRegistrations = pendingRegistrations.filter((registration) =>
 
   return (
     <AdminLayout>
-      <div className="p-8">
+      <div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
 
@@ -120,7 +120,7 @@ const filteredRegistrations = pendingRegistrations.filter((registration) =>
 
         </div>
 
-        <div className="mt-10 rounded-2xl bg-white shadow border">
+        <div className="mt-8 overflow-hidden rounded-2xl border bg-white shadow-sm">
 
           <div className="border-b p-6">
 
@@ -142,9 +142,13 @@ const filteredRegistrations = pendingRegistrations.filter((registration) =>
 
 </div>
 
-          <div className="max-h-[550px] overflow-y-auto overflow-x-auto">
+<div className="overflow-x-auto">
 
-            <table className="w-full">
+
+
+          <div className="max-h-[550px] overflow-y-auto">
+
+            <table className="min-w-[900px] w-full">
 
               <thead className="sticky top-0 bg-gray-100 z-10">
 
@@ -301,12 +305,12 @@ Approve
         </div>
 
       </div>
-
+</div>
 
 {showReceiptModal && selectedRegistration && (
   <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
 
-    <div className="w-[700px] rounded-xl bg-white p-6 shadow-2xl">
+    <div className="w-[95vw] max-w-3xl rounded-xl bg-white p-6 shadow-2xl">
 
       <div className="mb-5 flex items-center justify-between">
 
@@ -344,12 +348,12 @@ Approve
       </div>
 
       <div className="mt-6">
-        
+         
 
         <img
-          src={`http://localhost:5000${selectedRegistration.receiptUrl}`}
+          src={`https://cyon-evnt-management.onrender.com${selectedRegistration.receiptUrl}`}
           alt="Receipt"
-          className="max-h-[600px] w-full rounded-lg border object-contain"
+          className="max-h-[70vh] w-full rounded-lg border object-contain"
         />
 
       </div>

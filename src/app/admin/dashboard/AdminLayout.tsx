@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import Header from "./Header";
 import SidebarItems from "../../../components/layouts/sideber-items";
 import { logout } from "@/lib/auth";
@@ -16,87 +16,111 @@ export default function AdminLayout({ children }: Props) {
 
   const router = useRouter();
 
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
    const handleLogout = () => {
   logout();
   router.replace("/admin/login");
 };
 
-  return (
-    <div className="flex min-h-screen bg-[#F8FAFC]">
 
-      {/* Sidebar */}
-      <aside className="fixed left-0 top-0 flex h-screen w-72 flex-col overflow-y-auto bg-[#0B6B3A] text-white shadow-xl z-40">
+    return (
+  <div className="flex min-h-screen bg-[#F8FAFC]">
 
-        <div className="p-8 border-b border-green-700">
+    {/* Mobile Overlay */}
 
-          <h1 className="text-2xl font-bold">
-            CYON
-          </h1>
+    {sidebarOpen && (
+      <div
+        className="fixed inset-0 z-30 bg-black/40 lg:hidden"
+        onClick={() => setSidebarOpen(false)}
+      />
+    )}
 
-          <p className="text-green-200 text-sm">
-            Event Management
-          </p>
+    {/* Sidebar */}
 
-        </div>
+    <aside
+      className={`
+      fixed top-0 left-0 z-40
+      h-screen w-72
+      bg-[#0B6B3A]
+      text-white
+      shadow-xl
+      transform transition-transform duration-300
+      ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
+      lg:translate-x-0
+      lg:flex
+      flex flex-col
+      `}
+    >
 
-        <nav className="flex-1 p-4 space-y-2">
+      <div className="border-b border-green-700 p-8">
 
-          <SidebarItems title="Dashboard" href="/admin/dashboard" />
+        <h1 className="text-2xl font-bold">
+          CYON
+        </h1>
 
-<SidebarItems title="Events" href="/admin/events" />
+        <p className="text-sm text-green-200">
+          Event Management
+        </p>
 
-<SidebarItems title="Committee Member" href="/admin/committee-members" />
+      </div>
 
-<SidebarItems title="Parishes" href="/admin/parishes" />
+      <nav className="flex-1 space-y-2 overflow-y-auto p-4">
 
-<SidebarItems title="Delegates" href="/admin/delegates" />
+        <SidebarItems title="Dashboard" href="/admin/dashboard" />
+        <SidebarItems title="Events" href="/admin/events" />
+        <SidebarItems title="Committee Member" href="/admin/committee-members" />
+        <SidebarItems title="Parishes" href="/admin/parishes" />
+        <SidebarItems title="Delegates" href="/admin/delegates" />
+        <SidebarItems title="Committees" href="/admin/committee" />
+        <SidebarItems title="Accommodation" href="/admin/accommodation/hostels" />
+        <SidebarItems title="Settings" href="/admin/settings" />
 
-<SidebarItems title="Committees" href="/admin/committee" />
+      </nav>
 
-<SidebarItems title="Accommodation" href="/admin/accommodation/hostels" />
+      <div className="border-t border-green-700 p-4">
 
-<SidebarItems title="Finance" href="/admin/finance" />
+        <button
+          onClick={handleLogout}
+          className="w-full rounded-xl bg-red-500 py-3 font-semibold hover:bg-red-600"
+        >
+          Logout
+        </button>
 
-<SidebarItems title="Announcements" href="/admin/announcements" />
+      </div>
 
-<SidebarItems title="Reports" href="/admin/reports" />
+    </aside>
 
-<SidebarItems title="Settings" href="/admin/settings" />
+    {/* Main */}
 
-        </nav>
+    <main className="flex min-h-screen flex-1 flex-col lg:ml-72">
 
-        <div className="p-4 border-t border-green-700">
-          <button
-  onClick={handleLogout}
-  className="w-full rounded-xl bg-red-500 py-3 font-semibold hover:bg-red-600"
->
-  Logout
-</button>
-        </div>
+      {/* Mobile Top Bar */}
 
-      </aside>
+      <div className="sticky top-0 z-20 flex items-center justify-between border-b bg-white px-4 py-3 lg:hidden">
 
-      {/* Main Content */}
+        <button
+          onClick={() => setSidebarOpen(true)}
+          className="rounded-lg border p-2"
+        >
+          ☰
+        </button>
 
-      <main className="ml-72 flex-1 flex flex-col min-h-screen">
+        <h1 className="font-bold text-[#0B6B3A]">
+          CYON
+        </h1>
 
-    <div className="sticky top-0 z-30">
+      </div>
+
+      <div className="hidden lg:block">
     <Header />
 </div>
 
-    <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto p-4 lg:p-8">
         {children}
-    </div>
+      </div>
 
-</main>
-    </div>
-  );
-}
+    </main>
 
-function SidebarItem({ title }: { title: string }) {
-  return (
-    <button className="w-full rounded-xl px-4 py-3 text-left hover:bg-[#1A8A4A] transition">
-      {title}
-    </button>
-  );
-}
+  </div>
+);}
