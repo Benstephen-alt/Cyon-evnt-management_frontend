@@ -9,7 +9,14 @@ const api = axios.create({
 
 api.interceptors.request.use((config) => {
   if (typeof window !== "undefined") {
-    const token = localStorage.getItem("token");
+
+
+    const token =
+  localStorage.getItem("token") ||
+  localStorage.getItem("committeeToken") ||
+  localStorage.getItem("parishToken");
+
+
 
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -26,10 +33,36 @@ api.interceptors.response.use(
       error.response?.status === 401 &&
       typeof window !== "undefined"
     ) {
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
+      if (
+  error.response?.status === 401 &&
+  typeof window !== "undefined"
+) {
 
-      window.location.href = "/login";
+  if (localStorage.getItem("committeeToken")) {
+
+    localStorage.removeItem("committeeToken");
+    localStorage.removeItem("committeeUser");
+    localStorage.removeItem("activeCommittee");
+
+    window.location.href = "/committee/login";
+
+  } else if (localStorage.getItem("token")) {
+
+    localStorage.removeItem("token");
+    localStorage.removeItem("admin");
+
+    window.location.href = "/admin/login";
+
+  } else if (localStorage.getItem("parishToken")) {
+
+    localStorage.removeItem("parishToken");
+    localStorage.removeItem("parish");
+
+    window.location.href = "/parish/login";
+
+  }
+
+};
     }
 
     return Promise.reject(error);

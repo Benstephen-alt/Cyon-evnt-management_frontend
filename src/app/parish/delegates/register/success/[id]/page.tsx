@@ -153,14 +153,14 @@ Badge Preview
 <div ref={badgeRef}  className="w-[360px] h-[560px]" > 
 <img
 
-src={`http://localhost:5000/api/badges/${delegate.id}`}
+src={`https://cyon-evnt-management.onrender.com/api/badges/${delegate.id}`}
 
 className="rounded-xl border shadow-lg"
 
 />
 </div>
 
-
+ 
 <div className="mt-8 flex gap-4">
 
   <button

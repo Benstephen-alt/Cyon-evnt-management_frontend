@@ -24,8 +24,8 @@ export const committeeRoutes: Record<
   },
 
   Accommodation: {
-    path: "/committees/dashboard",
-    dashboard: true,
+    path: "/committee/accommodation",
+    dashboard: false,
     icon: "🛏️",
     description: "Expense management",
   },
@@ -52,36 +52,36 @@ export const committeeRoutes: Record<
   },
 
   Liturgy: {
-    path: "/committee/liturgy",
-    dashboard: false,
+    path: "/committees/dashboard",
+    dashboard: true,
     icon: "⛪",
     description: "Liturgy management",
   },
 
   ICT: {
-    path: "/committee/ict",
-    dashboard: false,
+    path: "/committees/dashboard",
+    dashboard: true,
     icon: "💻",
     description: "ICT management",
   },
 
   Media: {
-    path: "/committee/media",
-    dashboard: false,
+    path: "/committees/dashboard",
+    dashboard: true,
     icon: "📷",
     description: "Media management",
   },
 
   Registration: {
-    path: "/committee/registration",
+    path: "/committee/vendor",
     dashboard: false,
     icon: "📝",
     description: "Delegate registration",
   },
 
   Protocol: {
-    path: "/committee/protocol",
-    dashboard: false,
+    path: "/committees/dashboard",
+    dashboard: true,
     icon: "🎤",
     description: "Protocol management",
   },
