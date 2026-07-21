@@ -1,8 +1,10 @@
 "use client";
 
-import { useState } from "react";
-import ParishQrScanner from "@/components/ParishQrScanner";
+import { useRef, useState } from "react";
 import CommitteeHeader from "@/components/committee/CommitteeHeader";
+import ParishQrScanner, {
+  ParishQrScannerRef,
+} from "@/components/scanner/ParishQrScanner";
 
 import {
   scanParishQr,
@@ -17,22 +19,20 @@ interface ParishSummary {
     deanery: string;
   };
 
-  registration: {
-    paid: boolean;
-    approved: boolean;
-  };
-
-  delegates: {
-    total: number;
-    male: number;
-    female: number;
+  statistics: {
+    totalDelegates: number;
+    maleDelegates: number;
+    femaleDelegates: number;
+    accommodatedDelegates: number;
   };
 
   arrival: {
     hasArrived: boolean;
-    arrivedAt?: string;
+    arrivedAt?: string | null;
+    checkedInBy?: string | null;
   };
 }
+
 
 export default function ScanParishPage() {
   const [token, setToken] =
@@ -53,6 +53,9 @@ export default function ScanParishPage() {
     const [confirming, setConfirming] =
   useState(false);
 
+  const scannerRef =
+  useRef<ParishQrScannerRef>(null);
+
 interface ArrivalResult {
   parishName: string;
   totalDelegates: number;
@@ -72,7 +75,9 @@ const [arrivalResult, setArrivalResult] =
   useState(false);
 
 
-  async function processQrToken(qrToken: string) {
+  async function processQrToken(
+  qrToken: string
+): Promise<boolean> {
   setError("");
   setSuccess("");
   setArrivalResult(null);
@@ -80,39 +85,41 @@ const [arrivalResult, setArrivalResult] =
 
   if (!qrToken.trim()) {
     setError("Enter or scan a QR token.");
-    return;
+    return false;
   }
 
   try {
     setLoading(true);
 
-    const response = await scanParishQr(qrToken);
+    const response =
+      await scanParishQr(qrToken);
 
     setSummary(response.data);
 
-    setSuccess("Parish found successfully.");
-
-  } catch (err: any) {
-
-    setError(
-      err?.response?.data?.message ??
-      "Unable to scan QR code."
+    setSuccess(
+      "Parish found successfully."
     );
 
+    return true;
+  } catch (err: any) {
+    setError(
+      err?.response?.data?.message ??
+        "Unable to scan QR code."
+    );
+
+    return false;
   } finally {
-
     setLoading(false);
-
   }
 }
-
   async function handleScan(
   e: React.FormEvent
 ) {
+
   e.preventDefault();
 
   await processQrToken(token);
-}
+} 
 
   async function handleConfirmArrival() {
   if (!summary) return;
@@ -152,6 +159,25 @@ const [arrivalResult, setArrivalResult] =
   }
 }
 
+
+
+const handleCameraToggle = async () => {
+  if (!showCamera) {
+    setShowCamera(true);
+
+    requestAnimationFrame(() => {
+      scannerRef.current?.open();
+    });
+  } else {
+    await scannerRef.current?.close();
+    setShowCamera(false);
+  }
+};
+
+
+
+
+
   return (
   <div>
     <CommitteeHeader
@@ -176,9 +202,7 @@ const [arrivalResult, setArrivalResult] =
 
   <button
     type="button"
-    onClick={() =>
-      setShowCamera(!showCamera)
-    }
+    onClick={handleCameraToggle}
     className="rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white hover:bg-blue-700"
   >
     {showCamera
@@ -191,16 +215,12 @@ const [arrivalResult, setArrivalResult] =
   <div className="mt-6">
 
     <ParishQrScanner
-      onScan={async (value) => {
-
-        setToken(value);
-
-        setShowCamera(false);
-
-        await processQrToken(value);
-
-      }}
-    />
+  ref={scannerRef}
+  onScan={async (value) => {
+    setToken(value);
+    return await processQrToken(value);
+  }}
+/>
 
   </div>
 
@@ -268,25 +288,6 @@ const [arrivalResult, setArrivalResult] =
             </h3>
           </div>
 
-          <div>
-            <p className="text-sm text-gray-500">
-              Registration
-            </p>
-
-            <h3
-              className={`text-xl font-bold ${
-                summary.registration.paid &&
-                summary.registration.approved
-                  ? "text-green-600"
-                  : "text-red-600"
-              }`}
-            >
-              {summary.registration.paid &&
-              summary.registration.approved
-                ? "PAID & APPROVED"
-                : "NOT APPROVED"}
-            </h3>
-          </div>
 
         </div>
 
@@ -304,7 +305,7 @@ const [arrivalResult, setArrivalResult] =
               </p>
 
               <h2 className="mt-2 text-3xl font-bold">
-                {summary.delegates.total}
+                {summary.statistics.totalDelegates}
               </h2>
             </div>
 
@@ -314,7 +315,7 @@ const [arrivalResult, setArrivalResult] =
               </p>
 
               <h2 className="mt-2 text-3xl font-bold text-blue-700">
-                {summary.delegates.male}
+                {summary.statistics.maleDelegates}
               </h2>
             </div>
 
@@ -324,7 +325,7 @@ const [arrivalResult, setArrivalResult] =
               </p>
 
               <h2 className="mt-2 text-3xl font-bold text-pink-700">
-                {summary.delegates.female}
+                {summary.statistics.femaleDelegates}
               </h2>
             </div>
 
@@ -358,10 +359,10 @@ const [arrivalResult, setArrivalResult] =
             <button
               onClick={handleConfirmArrival}
               disabled={
-                confirming ||
-                !summary.registration.paid ||
-                !summary.registration.approved
-              }
+  confirming ||
+  summary.arrival.hasArrived
+}
+              
               className="rounded-lg bg-[#0B6B3A] px-8 py-3 font-semibold text-white hover:bg-green-700 disabled:opacity-50"
             >
               {confirming
@@ -502,18 +503,14 @@ const [arrivalResult, setArrivalResult] =
 
           <button
             onClick={() => {
+  setArrivalResult(null);
+  setSummary(null);
+  setToken("");
+  setSuccess("");
+  setError("");
 
-              setArrivalResult(null);
-
-              setSummary(null);
-
-              setToken("");
-
-              setSuccess("");
-
-              setError("");
-
-            }}
+  scannerRef.current?.resume();
+}}
             className="rounded-lg bg-[#0B6B3A] px-8 py-3 text-white hover:bg-green-700"
           >
             Scan Another Parish

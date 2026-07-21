@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { registerParish } from "@/services/parish";
 import { getActiveEvent } from "@/services/event.service";
+import { logout } from "@/lib/auth";
 
 export default function ParishRegistrationPage() {
   const router = useRouter();
@@ -114,6 +115,32 @@ export default function ParishRegistrationPage() {
           </p>
 
         </div>
+
+
+
+           <div className="flex items-center justify-between border-b p-8">
+  <div>
+    <h1 className="text-3xl font-bold text-[#0B6B3A]">
+      Parish Registration
+    </h1>
+
+    <p className="mt-2 text-gray-500">
+      Complete your parish registration before accessing the dashboard.
+    </p>
+  </div>
+
+  <button
+    type="button"
+    onClick={logout}
+    className="rounded-lg bg-red-600 px-5 py-2 font-semibold text-white hover:bg-red-700"
+  >
+    Logout
+  </button>
+</div>
+
+
+
+
 
         <div className="space-y-8 p-8">
 

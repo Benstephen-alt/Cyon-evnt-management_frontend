@@ -42,7 +42,7 @@ useEffect(() => {
     const token = localStorage.getItem("token");
 
     const res = await fetch(
-      "http://localhost:5000/api/parish/parish-dashboard",
+      "https://cyon-evnt-management.onrender.com/api/parish/parish-dashboard",
       {
         headers: {
           Authorization: `Bearer ${token}`,
