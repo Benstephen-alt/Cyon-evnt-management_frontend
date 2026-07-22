@@ -88,7 +88,7 @@ router.push(`/committee/${slug}`);
 
       setError(
         err?.response?.data?.message ??
-          "Login failed."
+          "unstable network."
       );
 
     } finally {

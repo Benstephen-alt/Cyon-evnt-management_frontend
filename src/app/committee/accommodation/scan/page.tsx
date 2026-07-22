@@ -192,41 +192,33 @@ const handleCameraToggle = async () => {
         Parish QR Scanner
       </h2>
 
-      <p className="mt-2 text-gray-500">
-        During development, paste the QR token below.
-        Camera scanning can be added later.
-      </p>
 
 
-       <div className="mt-6 flex gap-4">
+       <div className="mt-6 flex flex-col gap-4">
 
   <button
     type="button"
     onClick={handleCameraToggle}
-    className="rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white hover:bg-blue-700"
+    className="self-start rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white hover:bg-blue-700"
   >
     {showCamera
       ? "Close Camera"
       : "📷 Open Camera"}
   </button>
-   
-     {showCamera && (
 
-  <div className="mt-6">
-
+  {showCamera && (
     <ParishQrScanner
-  ref={scannerRef}
-  onScan={async (value) => {
-    setToken(value);
-    return await processQrToken(value);
-  }}
-/>
+      ref={scannerRef}
+      onScan={async (value) => {
+        setToken(value);
+        return await processQrToken(value);
+      }}
+    />
+  )}
 
-  </div>
-
-)}
-      
 </div>
+
+
 
 
 

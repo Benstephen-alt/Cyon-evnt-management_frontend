@@ -343,26 +343,35 @@ const ParishQrScanner = forwardRef<
 
     await scannerRef.current.start(
       {
-        facingMode: "environment",
-  
-      },
-      {
-        fps: 10,
-       // qrbox: {
-          //width: 280,
-         // height: 280,
-       // },
-        aspectRatio: 1,
-        disableFlip: false,
-      },
+    facingMode: "environment",
+  },
+  {
+    fps: 15,
+    qrbox: (w, h) => {
+      const size = Math.min(w, h) * 0.8;
+      return {
+        width: size,
+        height: size,
+      };
+    },
+  },
       async (decodedText) => {
         console.log("[Scanner] QR detected:", decodedText);
 
+      
         await handleScan(decodedText);
       },
       (errorMessage) => {
         // Comment this out later if it's too noisy.
         // Html5Qrcode calls this continuously while searching.
+
+           
+  if (errorMessage.includes("No MultiFormat Readers")) {
+    return;
+  }
+
+  console.log("[Scanner]", errorMessage);
+
          console.log("[Scanner] Decode attempt:", errorMessage);
       }
     );
