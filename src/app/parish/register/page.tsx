@@ -104,19 +104,6 @@ export default function ParishRegistrationPage() {
         className="mx-auto max-w-4xl rounded-2xl bg-white shadow-xl"
       >
 
-        <div className="border-b p-8">
-
-          <h1 className="text-3xl font-bold text-[#0B6B3A]">
-            Parish Registration
-          </h1>
-
-          <p className="mt-2 text-gray-500">
-            Complete your parish registration before accessing the dashboard.
-          </p>
-
-        </div>
-
-
 
            <div className="flex items-center justify-between border-b p-8">
   <div>
